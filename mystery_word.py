@@ -1,4 +1,4 @@
-import string #need this for line 11
+import string #need this for line 15
 import sys #need for exit
 mystery_word = " "
 mystery_word_length = (len(mystery_word))
@@ -17,15 +17,22 @@ alphabet_used = []
 play_again = " "
 letter = " "
 level = 0
+#from colorama import init
+from colorama import Fore, Back, Style
+# print(Fore.RED + 'some red text')
+# print(Back.BLUE + 'and with a blue background')
+# print(Style.DIM + 'and in dim text')
+# print(Style.RESET_ALL)
+# print('back to normal now')
 
 def intro_text():
-    print("Welcome to The Mystery Word Game!")
-    print("................")
+    print(f"{Style.BRIGHT}{Back.LIGHTMAGENTA_EX}Welcome to The Mystery Word Game!{Style.RESET_ALL}")
+    print(f"{Fore.LIGHTMAGENTA_EX}................")
     print("Rules: ")
     print("1. You are allowed 8 guesses.")
     print("2. You lose a guess only when the letter is not in the mystery")
     print("3. The game ends when you have the full word or run out of guesses")
-    print("................")
+    print(f"................{Style.RESET_ALL}")
 
 def how_hard():
     global level
@@ -33,11 +40,11 @@ def how_hard():
     print("")
     print("1 - Easy | 4-6 letter words")
     print("2 - Medium | 6-8 letter words")
-    print("3 - Easy | 8+ letter words")
+    print("3 - Difficult | 8+ letter words")
     print("")
     level = (int(input("Select a difficulty (1, 2 or 3): ")))
     print(f"You selected level: {level}")
-    print(type(level))
+    #print(type(level))
 
 def play_game():
     global guess_count 
@@ -78,7 +85,7 @@ def play_game():
         #word_easy = [x for x in word if len(word) < 6]
         
         mystery_word_length = (len(mystery_word))
-        print(mystery_word)
+        #print(mystery_word)
         file.close()
         print(" ")
         print(f"@@@The mystery word is {mystery_word_length} letters long.@@@")
@@ -87,32 +94,26 @@ def play_game():
     else: 
         while guess_count1 != 0:
             if hangman != mystery_word and guess_count < 9:
-                letter1 = str.lower(input(f">>>You are on try {guess_count} of 8 -- Guess a letter: "))
-                if letter1.isdigit():
-                    print("!!!")
-                    print("Your guess must be exactly one letter from the English alphabet. Try again")
+                letter1 = str.lower(input(f"{Style.BRIGHT}>>>You are on try {guess_count} of 8 -- Guess a letter: {Style.RESET_ALL}"))
+                if letter1.isdigit() or len(letter1) != 1:
                     print(" ")
-                    #play_game()
-                if len(letter1) != 1:
-                    print("!!!")
-                    print("Your guess must be exactly one letter from the English alphabet. Try again")
+                    print(f"{Fore.RED}!!!{Style.RESET_ALL} Your guess must be exactly one letter from the English alphabet. Try again. {Fore.RED}!!!{Style.RESET_ALL}")
                     print(" ")
-                    #play_game()
-                if letter1 not in alphabet_used:
+                elif letter1 not in alphabet_used:
                     guess_count1 += 1
                     letter = letter1
-                    alphabet_used += letter #I already forget why I was using letter1 and letter
+                    alphabet_used += letter #I already forget why I was using letter1 and letterword_guess_display
                     letter_match()
                 else:
-                    print("!!!")
-                    print("You already tried that letter. Try again")
-                    
+                    print(" ")
+                    print(f"{Fore.RED}!!!{Style.RESET_ALL}  You already tried that letter. Try again. {Fore.RED}!!!{Style.RESET_ALL}")
+                    print(" ")
             elif hangman == mystery_word and guess_count < 9:
-                print(f"****WOOHOO!! You guessed the mystery word!!****") 
+                print(f"{Fore.LIGHTGREEN_EX}{Style.BRIGHT}****WOOHOO!! You guessed the mystery word!!****{Style.RESET_ALL}") 
                 play_again() 
             else: 
-                print("Out of tries!!! Game over.")  
-                print(f"The mystery word was {mystery_word}")
+                print(f"{Fore.RED}Out of tries!!! Game over.{Style.RESET_ALL}")  
+                print(f'{Style.BRIGHT}The mystery word was "{mystery_word}"{Style.RESET_ALL}')
                 play_again()
     
 def letter_match():
